@@ -1,2 +1,3 @@
 # gin_blog
-A blog system for practise. Used The Gin Framework written in Go Language
+A blog system for practise. Used The Gin Framework written in Go Language <br>
+Backend and Frontend separation
