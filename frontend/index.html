@@ -33,11 +33,7 @@
     </section>
   </header>
   <div class="site-content" id="content">
-    <main-content title="Article title" created_time="2020-05-02 21:31:32" tag_id=1 tag_name="tech" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." post_id=5></main-content>
-    <main-content title="Article title" created_time="2020-05-02 20:31:32" tag_id=1 tag_name="tech" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." post_id=4></main-content>
-    <main-content title="Article title" created_time="2020-05-02 19:31:32" tag_id=1 tag_name="tech" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." post_id=3></main-content>
-    <main-content title="Article title" created_time="2020-05-02 18:31:32" tag_id=1 tag_name="tech" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." post_id=2></main-content>
-    <main-content title="Article title" created_time="2020-05-02 17:31:32" tag_id=1 tag_name="tech" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." post_id=1></main-content>
+    <main-content v-for="info in infos" v-bind:info="info"></main-content>
     <div class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
       <div class="pagination-list">
         <a class="pagination-previous" href="#1">Previous</a>
@@ -58,13 +54,33 @@
   // 注册
 Vue.component('main-content', {
   // 声明 props
-  props: ['title', 'created_time', 'tag_id', 'tag_name', 'description', 'post_id'],
+  props: ['info'],
   // 同样也可以在 vm 实例中像 "this.message" 这样使用
-  template: '<div class="container column is-offset-2"><div class="tile is-child notification"><p class="title">{{ title }}</p><p class="subtitle">Created date: {{ created_time }} Tags: <a class="tag is-link has-text-white" href="#">{{ tag_name }}</a></p><div class="content"><p>{{ description }}<a class="tag is-link has-text-white" href="#">Read More</a> </p></div></div></div>'
+  template: `
+    <div class="container column is-offset-2">
+      <div class="tile is-child notification">
+        <p class="title">{{ info.title }}</p>
+        <p class="subtitle">Created date: {{ info.created_time }} Tags: <a class="tag is-link has-text-white" href="#">{{ info.tag_name }}</a></p>
+        <div class="content">
+          <p>{{ info.description }}<a class="tag is-link has-text-white" href="#">Read More</a> </p>
+        </div>
+      </div>
+    </div>
+  `
 })
 // 创建根实例
 new Vue({
-  el: '#content'
+  el: '#content',
+  data: {
+    infos: [
+      { title: 'Post article', created_time: "2020-05-03 23:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
+      { title: 'Post article', created_time: "2020-05-03 22:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
+      { title: 'Post article', created_time: "2020-05-03 21:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
+      { title: 'Post article', created_time: "2020-05-03 20:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
+      { title: 'Post article', created_time: "2020-05-03 19:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
+      { title: 'Post article', created_time: "2020-05-03 18:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
+    ]
+  }
 })
   axios({
   method: 'get',
@@ -74,7 +90,6 @@ new Vue({
 })
   .then((result) => { console.log(result.data) })
   .catch((err) => { console.error(err) })
-
   </script>
 </body>
 </html>
