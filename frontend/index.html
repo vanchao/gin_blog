@@ -4,9 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-    <link rel="stylesheet" href="./css/bulma.min.css" />
+    <link rel="stylesheet" href="./css/bulma.css" />
+    <style>
+      .site {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      .site-content {
+        flex: 1;
+      }
+    </style>
 </head>
-<body>
-    Index page
+<body class="site">
+  <header>
+    <section class="hero is-info">
+      <div class="hero-body">
+        <div class="container content has-text-centered">
+          <h1 class="title">
+            Blog title 
+          </h1>
+        </div>
+      </div>
+    </section>
+  </header>
+  <div class="site-content">
+    <div class="container column is-offset-2">
+      <div class="tile is-child notification">
+        <p class="title">Article title</p>
+        <p class="subtitle">Created date: 2020-05-02 10:31:32 Tags: Tech</p>
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+        </div>
+      </div>
+    </div>
+    <div class="container column is-offset-2">
+      <div class="tile is-child notification">
+        <p class="title">Article title</p>
+        <p class="subtitle">Created date: 2020-05-02 09:31:32 Tags: Tech</p>
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+        </div>
+      </div>
+    </div>
+    <div class="container column is-offset-2">
+      <div class="tile is-child notification">
+        <p class="title">Article title</p>
+        <p class="subtitle">Created date: 2020-05-02 10:31:32 Tags: Tech</p>
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+        </div>
+      </div>
+    </div>
+    <div class="container column is-offset-2">
+      <div class="tile is-child notification">
+        <p class="title">Article title</p>
+        <p class="subtitle">Created date: 2020-05-02 09:31:32 Tags: Tech</p>
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
+    <div class="pagination-list">
+      <a class="pagination-previous" href="#1">Previous</a>
+      <a class="pagination-next"  href="#2">Next page</a>
+    </div>
+  </div>
+  <footer class="footer">
+    This is footer
+  </footer>
 </body>
 </html>
