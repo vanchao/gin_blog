@@ -11,7 +11,6 @@ func main() {
 	config := cors.DefaultConfig()
 	config.AllowMethods = []string{"GET", "POST", "OPTIONS", "PUT"}
 	config.AllowOrigins = []string{"http://127.0.0.1:5550/"}
-	//config.AllowAllOrigins = true
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://127.0.0.1:5500"},
 		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST"},

@@ -11,11 +11,9 @@
         min-height: 100vh;
         flex-direction: column;
       }
-
       .site-content {
         flex: 1;
       }
-
       .notification a:not(.button):not(.dropdown-item) {
         text-decoration: none;
       }
@@ -93,5 +91,16 @@
       </p>
     </div>
   </footer>
+  <script src="./js/axios.min.js"></script>
+  <script>
+  axios({
+  method: 'get',
+  baseURL: 'http://localhost:8080',
+  url: '/ping',
+  'Content-Type': 'application/json',
+})
+  .then((result) => { console.log(result.data) })
+  .catch((err) => { console.error(err) })
+  </script>
 </body>
 </html>
