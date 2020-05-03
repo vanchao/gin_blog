@@ -2,5 +2,4 @@
 .idea/
 .idea/*
 main/sql.go
-main/config/
-main/config/*
+main/config/*.*
