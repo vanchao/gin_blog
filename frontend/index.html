@@ -71,25 +71,23 @@ Vue.component('main-content', {
 // 创建根实例
 new Vue({
   el: '#content',
-  data: {
-    infos: [
-      { title: 'Post article', created_time: "2020-05-03 23:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
-      { title: 'Post article', created_time: "2020-05-03 22:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
-      { title: 'Post article', created_time: "2020-05-03 21:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
-      { title: 'Post article', created_time: "2020-05-03 20:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
-      { title: 'Post article', created_time: "2020-05-03 19:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
-      { title: 'Post article', created_time: "2020-05-03 18:31:12", tag_name: "Tech", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis....." },
-    ]
+  data () {
+    return {
+      infos: null
+    }
+  },
+  mounted () {
+    axios({
+    method: 'get',
+    baseURL: 'http://localhost:8080',
+    url: '/post_list',
+    'Content-Type': 'application/json',
+  })
+    .then((result) => { r = result.data; this.infos = r['result'] })
+    .catch((err) => { console.error(err) })
+
   }
 })
-  axios({
-  method: 'get',
-  baseURL: 'http://localhost:8080',
-  url: '/ping',
-  'Content-Type': 'application/json',
-})
-  .then((result) => { console.log(result.data) })
-  .catch((err) => { console.error(err) })
   </script>
 </body>
 </html>
