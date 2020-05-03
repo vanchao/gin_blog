@@ -1,1 +1,1 @@
-{ "user_name": "root", "password": "root", "protocol": "unix(/Applications/MAMP/tmp/mysql/mysql.sock)", "database": "gin_blog" }
+{ "user_name": "uname", "password": "uname", "protocol": "unix_protocol", "database": "dbname" }
