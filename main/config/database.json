@@ -1,0 +1,1 @@
+{ "user_name": "uname", "password": "pwd", "protocol": "unix(/cloudsql/project-id:region-name:instance-name)", "database": "dbname" }
