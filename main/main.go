@@ -12,7 +12,7 @@ import (
 
 func main() {
 	r := gin.Default()
-	v1 := r.Group("/v1")
+	v1 := r.Group("/frontend")
 	{
 		config := cors.DefaultConfig()
 		config.AllowMethods = []string{"GET", "POST", "OPTIONS", "PUT"}
