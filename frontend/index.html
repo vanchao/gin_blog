@@ -59,11 +59,17 @@ Vue.component('main-content', {
         <p class="title">{{ info.title }}</p>
         <p class="subtitle">Created date: {{ info.created_time }} Tags: <a class="tag is-link has-text-white" href="#">{{ info.tag_name }}</a></p>
         <div class="content">
-          <p>{{ info.description }}<a class="tag is-link has-text-white" href="#">Read More</a> </p>
+          <p>{{ info.description }}<a class="tag is-link has-text-white" :href='hrefCompute'>Read More</a> </p>
         </div>
       </div>
     </div>
-  `
+  `,
+  computed: {
+       hrefCompute(){
+          var i = this.info 
+          return "/post.html?post_id=" + i['id'];
+       }
+  },
 })
 Vue.component('pagination-previous', {
   template: `<a class=pagination-previous>Previous</a>`,
@@ -114,7 +120,7 @@ new Vue({
       .then((result) => { r = result.data; this.infos = r['result']; this.next_display = 10 == r['is_next_display'] ? true : false ; this.prev_display = 10 == r['is_prev_display'] ? true : false;})
       .catch((err) => { console.error(err); this.infos = {} })
     }
-  }
+  },
 })
   </script>
 </body>
