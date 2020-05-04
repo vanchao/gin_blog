@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"net/http"
 	sq "github.com/Masterminds/squirrel"
+	"strconv"
 )
 
 type Post struct {
@@ -25,13 +26,27 @@ type Post struct {
 
 func Post_list(c *gin.Context) {
 
-	var offset, limit uint64
+	c_page := c.Query("current_page")
 
-	offset	 = 0
+	current_page, err := strconv.ParseUint(c_page, 10, 64)
+	if err != nil {
+		e := fmt.Sprintf("Error found30: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error_msg": e,
+		})
+	}
+
+	if 0 == current_page {
+		current_page = 1
+	}
+
+	var offset, limit uint64
 
 	limit 	 = 5
 
-	sql_string, args, err := sq.Select("*").From("posts").Offset(offset).Limit(limit).ToSql()
+	offset	 = (current_page - 1) * limit
+
+	sql_string, args, err := sq.Select("*").From("posts").OrderBy("created_time DESC").Offset(offset).Limit(limit).ToSql()
 
 	if(nil != err) {
 		e := fmt.Sprintf("Error found40: %v", err)
@@ -77,6 +92,7 @@ func Post_list(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"result": posts,
+		"current_page": current_page,
 	})
 
 }
