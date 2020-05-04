@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Content</title>
+    <link rel="stylesheet" href="./css/bulma.css" />
+    <style>
+      .site {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+      .site-content {
+        flex: 1;
+        padding-bottom: 10px;
+      }
+      .notification a:not(.button):not(.dropdown-item) {
+        text-decoration: none;
+      }
+    </style>
+</head>
+<body class="site">
+  <header>
+    <section class="hero is-info">
+      <div class="hero-body">
+        <div class="container content has-text-centered">
+          <h1 class="title">
+            Blog title 
+          </h1>
+        </div>
+      </div>
+    </section>
+  </header>
+  <div class="site-content" id="post-content">
+    <div class="container content has-text-centered is-offset-2">
+        <article class="column notification is-white">
+            <p class="title">Wide tile</p>
+            <p class="subtitle">Aligned with the right tile</p>
+            <div class="content">
+                This is content
+            </div>
+        </article>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>A simple footer</strong> 
+      </p>
+    </div>
+  </footer>
+  <script src="./js/axios.min.js"></script>
+  <script src="./js/vue.min.js"></script>
+  <script>
+  </script>
+</body>
+</html>

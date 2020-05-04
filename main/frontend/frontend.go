@@ -172,6 +172,23 @@ func Post_list(c *gin.Context) {
 
 }
 
+func Post_info(c *gin.Context) {
+
+	id := c.Query("post_id")
+
+	post_id, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		e := fmt.Sprintf("Error found30: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error_msg": e,
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"post_id": post_id,
+	})
+}
+
 func getConnString() string {
 	viper.SetConfigName("database")
 	viper.SetConfigType("json")
