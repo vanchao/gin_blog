@@ -80,11 +80,11 @@ new Vue({
     axios({
     method: 'get',
     baseURL: 'http://localhost:8080',
-    url: '/post_list',
+    url: '/v1/post_list',
     'Content-Type': 'application/json',
   })
     .then((result) => { r = result.data; this.infos = r['result'] })
-    .catch((err) => { console.error(err) })
+    .catch((err) => { console.error(err); this.infos = {} })
 
   }
 })
