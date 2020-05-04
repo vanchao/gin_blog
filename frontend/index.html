@@ -36,8 +36,8 @@
     <main-content v-for="info in infos" v-bind:info="info"></main-content>
     <div class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
       <div class="pagination-list">
-        <a class="pagination-previous" v-on:click="page_to(1)">Previous</a>
-        <a class="pagination-next"  v-on:click="page_to(2)">Next page</a>
+        <a class=pagination-previous v-if="prev_display" v-on:click="page_to_prev">Previous</a>
+        <a class="pagination-next" v-if="next_display" v-on:click="page_to_next">Next</a>
       </div>
     </div>
   </div>
@@ -65,11 +65,17 @@ Vue.component('main-content', {
     </div>
   `
 })
+Vue.component('pagination-previous', {
+  template: `<a class=pagination-previous>Previous</a>`,
+})
 new Vue({
   el: '#content',
   data () {
     return {
-      infos: null
+      infos: null,
+      info: null,
+      prev_display: false,
+      next_display: false
     }
   },
   mounted () {
@@ -80,19 +86,32 @@ new Vue({
       params: { current_page: 1 },
       'Content-Type': 'application/json',
     })
-    .then((result) => { r = result.data; this.infos = r['result'] })
-    .catch((err) => { console.error(err); this.infos = {} })
+    .then((result) => { r = result.data; this.info = r; this.infos = r['result']; this.next_display = 10 == r['is_next_display'] ? true : false ; this.prev_display = 10 == r['is_prev_display'] ? true : false; })
+    .catch((err) => { console.error(err); this.infos = {}; this.info = {} })
   },
   methods: {
-    page_to: function (page_num = 1) {
+    page_to_next: function () {
+      var i = this.info 
       axios({
         method: 'get',
         baseURL: 'http://localhost:8080',
         url: '/frontend/post_list',
-        params: { current_page: page_num },
+        params: { current_page: i['next_page'] },
         'Content-Type': 'application/json',
       })
-      .then((result) => { r = result.data; this.infos = r['result'] })
+      .then((result) => { r = result.data; this.infos = r['result']; this.next_display = 10 == r['is_next_display'] ? true : false ; this.prev_display = 10 == r['is_prev_display'] ? true : false;})
+      .catch((err) => { console.error(err); this.infos = {} })
+    },
+    page_to_prev: function () {
+      var i = this.info 
+      axios({
+        method: 'get',
+        baseURL: 'http://localhost:8080',
+        url: '/frontend/post_list',
+        params: { current_page: i['prev_page'] },
+        'Content-Type': 'application/json',
+      })
+      .then((result) => { r = result.data; this.infos = r['result']; this.next_display = 10 == r['is_next_display'] ? true : false ; this.prev_display = 10 == r['is_prev_display'] ? true : false;})
       .catch((err) => { console.error(err); this.infos = {} })
     }
   }

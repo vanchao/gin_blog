@@ -3,11 +3,17 @@ package frontend
 import (
 	"database/sql"
 	"fmt"
+	sq "github.com/Masterminds/squirrel"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"math"
 	"net/http"
-	sq "github.com/Masterminds/squirrel"
 	"strconv"
+)
+
+const (
+	IS_DISPLAY  = 10
+	NOT_DISPLAY = 20
 )
 
 type Post struct {
@@ -23,6 +29,10 @@ type Post struct {
 	Content string `json:"content" form:"content"`
 }
 
+var (
+	total_count, offset, limit,  first_page, next_page, prev_page  uint64
+)
+
 
 func Post_list(c *gin.Context) {
 
@@ -36,15 +46,16 @@ func Post_list(c *gin.Context) {
 		})
 	}
 
-	if 0 == current_page {
-		current_page = 1
-	}
+	first_page = 1
 
-	var offset, limit uint64
+	if 0 == current_page {
+		current_page = first_page
+	}
 
 	limit 	 = 5
 
 	offset	 = (current_page - 1) * limit
+
 
 	sql_string, args, err := sq.Select("*").From("posts").OrderBy("created_time DESC").Offset(offset).Limit(limit).ToSql()
 
@@ -90,9 +101,43 @@ func Post_list(c *gin.Context) {
 		})
 	}
 
+	total_count = 6
+
+	last_page := math.Ceil( (float64(total_count * 100) / float64(limit)) / 100  )
+
+	next_page = current_page + 1
+
+	prev_page = current_page - 1
+
+	is_prev_display := IS_DISPLAY
+
+	is_next_display := IS_DISPLAY
+
+	if current_page >= uint64(last_page)  {
+		current_page = uint64(last_page)
+		is_next_display = NOT_DISPLAY
+	}
+
+	if next_page > uint64(last_page) {
+		next_page = uint64(last_page)
+	}
+
+	if prev_page < first_page {
+		prev_page = first_page
+	}
+
+	if current_page <= prev_page {
+		current_page = prev_page
+		is_prev_display = NOT_DISPLAY
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"result": posts,
 		"current_page": current_page,
+		"next_page": next_page,
+		"prev_page": prev_page,
+		"is_next_display": is_next_display,
+		"is_prev_display": is_prev_display,
 	})
 
 }
