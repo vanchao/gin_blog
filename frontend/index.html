@@ -51,11 +51,8 @@
   <script src="./js/axios.min.js"></script>
   <script src="./js/vue.min.js"></script>
   <script>
-  // 注册
 Vue.component('main-content', {
-  // 声明 props
   props: ['info'],
-  // 同样也可以在 vm 实例中像 "this.message" 这样使用
   template: `
     <div class="container column is-offset-2">
       <div class="tile is-child notification">
@@ -68,7 +65,6 @@ Vue.component('main-content', {
     </div>
   `
 })
-// 创建根实例
 new Vue({
   el: '#content',
   data () {
@@ -80,7 +76,7 @@ new Vue({
     axios({
     method: 'get',
     baseURL: 'http://localhost:8080',
-    url: '/v1/post_list',
+    url: '/frontend/post_list',
     'Content-Type': 'application/json',
   })
     .then((result) => { r = result.data; this.infos = r['result'] })
