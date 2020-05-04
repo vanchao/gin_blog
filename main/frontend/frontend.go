@@ -57,7 +57,7 @@ func Post_list(c *gin.Context) {
 	offset	 = (current_page - 1) * limit
 
 
-	sql_string, args, err := sq.Select("*").From("posts").OrderBy("created_time DESC").Offset(offset).Limit(limit).ToSql()
+	select_string, args, err := sq.Select("*").From("posts").OrderBy("created_time DESC").Offset(offset).Limit(limit).ToSql()
 
 	if(nil != err) {
 		e := fmt.Sprintf("Error found40: %v", err)
@@ -76,7 +76,37 @@ func Post_list(c *gin.Context) {
 	}
 
 	defer db.Close()
-	rows, err := db.Query(sql_string)
+
+	count_string, args, err := sq.Select("COUNT(id) as COUNT").From("posts").ToSql()
+	if(nil != err) {
+		e := fmt.Sprintf("Error found41: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error_msg": e,
+		})
+	}
+
+
+	cnt_rows, err := db.Query(count_string)
+
+	var count int
+
+	for cnt_rows.Next() {
+		if err := cnt_rows.Scan(&count); err != nil {
+			e := fmt.Sprintf("Error found42: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error_msg": e,
+			})
+		}
+	}
+
+	if(nil != err) {
+		e := fmt.Sprintf("Error found43: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error_msg": e,
+		})
+	}
+
+	rows, err := db.Query(select_string)
 	if err != nil {
 		e := fmt.Sprintf("Error found60: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -101,7 +131,7 @@ func Post_list(c *gin.Context) {
 		})
 	}
 
-	total_count = 6
+	total_count = uint64(count)
 
 	last_page := math.Ceil( (float64(total_count * 100) / float64(limit)) / 100  )
 
