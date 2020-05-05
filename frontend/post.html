@@ -57,13 +57,7 @@ Vue.component('main-content', {
             <p>{{ info.content }}
         </div>
     </article>
-  `,
-  computed: {
-    hrefCompute(){
-      var i = this.info 
-      return "/post.html?post_id=" + i['id'];
-    }
-  },
+  `
 })
 new Vue({
   el: '#post-content',
