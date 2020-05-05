@@ -17,22 +17,21 @@ const (
 )
 
 type Post struct {
-	Id        int    `json:"id" form:"id"`
-	TagId     int    `json:"tag_id" form:"tag_id"`
-	AuthorId  int    `json:"author_id" form:"author_id"`
-	UpdatedTime sql.NullString      `json:"updated_time" form:"updated_time"`
-	CreatedTime string      `json:"created_time" form:"created_time"`
-	AuthorName string      `json:"author_name" form:"author_name"`
-	Title string `json:"title" form:"title"`
-	TagName string `json:"tag_name" form:"tag_name"`
-	Description string `json:"description" form:"description"`
-	Content string `json:"content" form:"content"`
+	Id          int            `json:"id" form:"id"`
+	TagId       int            `json:"tag_id" form:"tag_id"`
+	AuthorId    int            `json:"author_id" form:"author_id"`
+	UpdatedTime sql.NullString `json:"updated_time" form:"updated_time"`
+	CreatedTime string         `json:"created_time" form:"created_time"`
+	AuthorName  string         `json:"author_name" form:"author_name"`
+	Title       string         `json:"title" form:"title"`
+	TagName     string         `json:"tag_name" form:"tag_name"`
+	Description string         `json:"description" form:"description"`
+	Content     string         `json:"content" form:"content"`
 }
 
 var (
-	total_count, offset, limit,  first_page, next_page, prev_page  uint64
+	total_count, offset, limit, first_page, next_page, prev_page uint64
 )
-
 
 func Post_list(c *gin.Context) {
 
@@ -52,14 +51,13 @@ func Post_list(c *gin.Context) {
 		current_page = first_page
 	}
 
-	limit 	 = 5
+	limit = 5
 
-	offset	 = (current_page - 1) * limit
-
+	offset = (current_page - 1) * limit
 
 	select_string, args, err := sq.Select("*").From("posts").OrderBy("created_time DESC").Offset(offset).Limit(limit).ToSql()
 
-	if(nil != err) {
+	if nil != err {
 		e := fmt.Sprintf("Error found40: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error_msg": e,
@@ -78,13 +76,12 @@ func Post_list(c *gin.Context) {
 	defer db.Close()
 
 	count_string, args, err := sq.Select("COUNT(id) as COUNT").From("posts").ToSql()
-	if(nil != err) {
+	if nil != err {
 		e := fmt.Sprintf("Error found41: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error_msg": e,
 		})
 	}
-
 
 	cnt_rows, err := db.Query(count_string)
 
@@ -99,7 +96,7 @@ func Post_list(c *gin.Context) {
 		}
 	}
 
-	if(nil != err) {
+	if nil != err {
 		e := fmt.Sprintf("Error found43: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error_msg": e,
@@ -124,7 +121,7 @@ func Post_list(c *gin.Context) {
 
 	_ = args
 
-	if(nil != err) {
+	if nil != err {
 		e := fmt.Sprintf("Error found70: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error_msg": e,
@@ -133,7 +130,7 @@ func Post_list(c *gin.Context) {
 
 	total_count = uint64(count)
 
-	last_page := math.Ceil( (float64(total_count * 100) / float64(limit)) / 100  )
+	last_page := math.Ceil((float64(total_count*100) / float64(limit)) / 100)
 
 	next_page = current_page + 1
 
@@ -143,7 +140,7 @@ func Post_list(c *gin.Context) {
 
 	is_next_display := IS_DISPLAY
 
-	if current_page >= uint64(last_page)  {
+	if current_page >= uint64(last_page) {
 		current_page = uint64(last_page)
 		is_next_display = NOT_DISPLAY
 	}
@@ -162,10 +159,10 @@ func Post_list(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"result": posts,
-		"current_page": current_page,
-		"next_page": next_page,
-		"prev_page": prev_page,
+		"result":          posts,
+		"current_page":    current_page,
+		"next_page":       next_page,
+		"prev_page":       prev_page,
 		"is_next_display": is_next_display,
 		"is_prev_display": is_prev_display,
 	})
@@ -174,23 +171,11 @@ func Post_list(c *gin.Context) {
 
 func Post_info(c *gin.Context) {
 
-	//Id        int    `json:"id" form:"id"`
-	//TagId     int    `json:"tag_id" form:"tag_id"`
-	//AuthorId  int    `json:"author_id" form:"author_id"`
-	//UpdatedTime sql.NullString      `json:"updated_time" form:"updated_time"`
-	//CreatedTime string      `json:"created_time" form:"created_time"`
-	//AuthorName string      `json:"author_name" form:"author_name"`
-	//Title string `json:"title" form:"title"`
-	//TagName string `json:"tag_name" form:"tag_name"`
-	//Description string `json:"description" form:"description"`
-	//Content string `json:"content" form:"content"`
-
-
 	id := c.Query("post_id")
 
 	var tag_id, author_id int
 
-	var created_time, author_name, title, tag_name,  description, content string
+	var created_time, author_name, title, tag_name, description, content string
 
 	post_id, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
@@ -231,10 +216,10 @@ func Post_info(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"post_id": post_id,
+		"post_id":      post_id,
 		"created_time": created_time,
-		"author_name": author_name,
-		"content": content,
+		"author_name":  author_name,
+		"content":      content,
 	})
 }
 
@@ -253,4 +238,3 @@ func getConnString() string {
 	str := fmt.Sprintf("%s:%s@%s/%s", uname, pwd, protocol, db)
 	return str
 }
-
