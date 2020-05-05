@@ -30,6 +30,7 @@ func main() {
 			MaxAge: 12 * time.Hour,
 		}))
 		v1.GET("/post_list", frontend.Post_list)
+		v1.GET("/post_info", frontend.Post_info)
 	}
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{

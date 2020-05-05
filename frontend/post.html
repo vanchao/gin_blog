@@ -34,13 +34,7 @@
   </header>
   <div class="site-content" id="post-content">
     <div class="container content has-text-centered is-offset-2">
-        <article class="column notification is-white">
-            <p class="title">Wide tile</p>
-            <p class="subtitle">Aligned with the right tile</p>
-            <div class="content">
-                This is content
-            </div>
-        </article>
+        <main-content v-bind:info="info"></main-content>
     </div>
   </div>
   <footer class="footer">
@@ -53,6 +47,24 @@
   <script src="./js/axios.min.js"></script>
   <script src="./js/vue.min.js"></script>
   <script>
+Vue.component('main-content', {
+  props: ['info'],
+  template: `
+    <article class="column notification is-white">
+        <p class="title">{{ info.title }}</p>
+        <p class="subtitle">Created date: {{ info.created_time }} Author Name: {{ info.author_name }}</p>
+        <div class="content">
+            <p>{{ info.content }}
+        </div>
+    </article>
+  `,
+  computed: {
+    hrefCompute(){
+      var i = this.info 
+      return "/post.html?post_id=" + i['id'];
+    }
+  },
+})
 new Vue({
   el: '#post-content',
   data () {
@@ -61,8 +73,17 @@ new Vue({
     }
   },
   mounted () {
-      var post_id = this.getQueryVariable("post_id")
-      console.log(post_id)
+    var post_id = this.getQueryVariable("post_id")
+    console.log(post_id)
+    axios({
+      method: 'get',
+      baseURL: 'http://localhost:8080',
+      url: '/frontend/post_info',
+      params: { post_id: post_id },
+      'Content-Type': 'application/json',
+    })
+    .then((result) => { r = result.data; this.info = r; /*console.log(r)*/})
+    .catch((err) => { console.error(err); this.info = {} })
   },
   methods: {
     getQueryVariable: function (variable)  {

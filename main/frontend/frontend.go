@@ -174,7 +174,23 @@ func Post_list(c *gin.Context) {
 
 func Post_info(c *gin.Context) {
 
+	//Id        int    `json:"id" form:"id"`
+	//TagId     int    `json:"tag_id" form:"tag_id"`
+	//AuthorId  int    `json:"author_id" form:"author_id"`
+	//UpdatedTime sql.NullString      `json:"updated_time" form:"updated_time"`
+	//CreatedTime string      `json:"created_time" form:"created_time"`
+	//AuthorName string      `json:"author_name" form:"author_name"`
+	//Title string `json:"title" form:"title"`
+	//TagName string `json:"tag_name" form:"tag_name"`
+	//Description string `json:"description" form:"description"`
+	//Content string `json:"content" form:"content"`
+
+
 	id := c.Query("post_id")
+
+	var tag_id, author_id int
+
+	var created_time, author_name, title, tag_name,  description, content string
 
 	post_id, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
@@ -184,8 +200,41 @@ func Post_info(c *gin.Context) {
 		})
 	}
 
+	select_active := sq.Select("tag_id, author_id, created_time, author_name, title, tag_name, description, content").From("posts").Where(sq.Eq{"id": post_id})
+
+	sqlConnString := getConnString()
+	db, err := sql.Open("mysql", sqlConnString)
+	if err != nil {
+		e := fmt.Sprintf("Error found50: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error_msg": e,
+		})
+	}
+
+	defer db.Close()
+
+	rows, err := select_active.RunWith(db).Query()
+	if err != nil {
+		e := fmt.Sprintf("Error found60: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error_msg": e,
+		})
+	}
+
+	for rows.Next() {
+		if err := rows.Scan(&tag_id, &author_id, &created_time, &author_name, &title, &tag_name, &description, &content); err != nil {
+			e := fmt.Sprintf("Error found42: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error_msg": e,
+			})
+		}
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"post_id": post_id,
+		"created_time": created_time,
+		"author_name": author_name,
+		"content": content,
 	})
 }
 
