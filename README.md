@@ -5,4 +5,3 @@ frontend_template directory used for visitor (html bulma.css vue.js axios.js)<br
 
 main directory supply api for index and post page which in the frontend_template (golang  gin framework) <br><br>
 
-admin directory is management system for the blog system (php Laravel framework)<br><br>
